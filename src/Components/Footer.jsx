@@ -1,174 +1,154 @@
 /* eslint-disable no-unused-vars */
-// Footer.jsx
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react"; // useGSAP is the recommended React hook
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { FaXTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa6";
 import { HiOutlineArrowCircleUp } from "react-icons/hi";
 
 const Footer = () => {
-  // Step 1: Create a ref for the whole footer (for ScrollTrigger trigger)
   const footerRef = useRef(null);
-  // Step 2: Create a ref array for the 4 columns (to animate them together)
   const colsRef = useRef([]);
+  const marqueeRef = useRef(null);
+  const rotateIconRef = useRef(null);
 
-  // Step 3: Use useGSAP instead of useEffect (safer, auto-cleanup, better practice)
   useGSAP(
     () => {
-      // Animate all footer columns (Brand, Product, Resources, Social) when they come into view
+      // 1. Reveal Animation (Slightly slower for premium feel)
       gsap.from(colsRef.current, {
         opacity: 0,
-        y: 50,
-        duration: 1,
+        y: 40,
+        duration: 1.5,
         stagger: 0.2,
         ease: "power4.out",
         scrollTrigger: {
-          // Trigger this animation when the footer appears in the viewport
           trigger: footerRef.current,
-          // Start animation when footer is 90% into the viewport
           start: "top 90%",
         },
       });
 
-      // Optional: Add a small parallax effect to the bottom bar (extra parallax layer)
-      gsap.to(".footer-bottom", {
-        yPercent: 10,
+      // 2. Dark Marquee (Background Text)
+      gsap.to(marqueeRef.current, {
+        xPercent: -50,
+        repeat: -1,
+        duration: 30,
         ease: "none",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true, // Makes it smoothly follow scroll
-        },
+      });
+
+      // 3. Dark Rotating Geometry
+      gsap.to(rotateIconRef.current, {
+        rotate: 360,
+        duration: 12,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // 4. Smooth Floating Social Icons
+      gsap.to(".social-icon", {
+        y: -10,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        stagger: { each: 0.3, from: "center" }
       });
     },
-    // Use `scope: footerRef` so GSAP only looks inside this footer
     { scope: footerRef }
   );
 
-  // Function to scroll back to top (smooth animation)
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Social links (Twitter, LinkedIn, GitHub)
   const socialLinks = [
     { Icon: FaXTwitter, color: "hover:bg-black", link: "#" },
-    { Icon: FaLinkedinIn, color: "hover:bg-[#0077B5]", link: "#" }, // LinkedIn Blue
-    { Icon: FaGithub, color: "hover:bg-[#333]", link: "#" },       // GitHub Black
+    { Icon: FaLinkedinIn, color: "hover:bg-[#0077B5]", link: "#" },
+    { Icon: FaGithub, color: "hover:bg-[#333]", link: "#" },
   ];
+
+  const floatingWords = ["PRACTICE", "UPSKILL", "PLAY", "IMPROVE", "IMPACT", "EVOLVE"];
 
   return (
     <footer
       ref={footerRef}
-      className="relative overflow-hidden bg-transparent border-t border-white/10 pt-20 pb-10 z-20"
+      className="relative overflow-hidden bg-transparent border-t border-black/10 pt-32 pb-12 z-20"
     >
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div
-          className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/20 rounded-full blur-[100px]"
-          style={{
-            animation: "pulse 8s ease-in-out infinite",
-          }}
-        />
+      {/* BACKGROUND TEXT - Dark Outline for Orange contrast */}
+      <div className="absolute top-10 left-0 w-full overflow-hidden opacity-[0.07] pointer-events-none select-none">
+        <div ref={marqueeRef} className="flex whitespace-nowrap gap-20">
+          {[...floatingWords, ...floatingWords].map((word, i) => (
+            <span key={i} className="text-[14vw] font-black leading-none text-transparent" 
+                  style={{ WebkitTextStroke: '1.5px black' }}>
+              {word}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <style jsx>{`
-        @keyframes pulse {
-          0%,
-          100% {
-            transform: scale(1);
-            opacity: 0.1;
-          }
-          50% {
-            transform: scale(1.2);
-            opacity: 0.3;
-          }
-        }
-      `}</style>
+      {/* ROTATING ELEMENT - Dark/Black tone */}
+      <div className="absolute right-[8%] top-[15%] opacity-15 pointer-events-none">
+          <div ref={rotateIconRef} className="w-44 h-44 border-2 border-dashed border-black rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 border border-black rotate-45 opacity-40" />
+              <div className="absolute w-1 h-full bg-black/10" />
+          </div>
+      </div>
 
-      {/* Content container */}
-      <div className="max-w-7xl mx-auto px-6 relative">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          {/* Brand Column */}
-          <div ref={(el) => (colsRef.current[0] = el)} className="col-span-1">
-            <div className="text-2xl font-black tracking-tighter text-white mb-4">
-              RYZE<span className="text-orange-950">.AI</span>
+      <div className="max-w-7xl mx-auto px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+          {/* Brand */}
+          <div ref={(el) => (colsRef.current[0] = el)}>
+            <div className="text-3xl font-black tracking-tighter text-white mb-6 drop-shadow-md">
+              RYZE<span className="text-black/20">.AI</span>
             </div>
-            <p className="text-orange-950/80 text-sm font-medium leading-relaxed">
+            <p className="text-black/60 text-sm font-semibold leading-relaxed max-w-60">
               Empowering the next generation of philanthropy through AI‑driven financial technology.
             </p>
           </div>
 
-          {/* Product Links */}
-          <div ref={(el) => (colsRef.current[1] = el)} className="col-span-1">
-            <h4 className="text-orange-950 font-black text-xs uppercase tracking-[0.2em] mb-6">
-              Product
-            </h4>
-            <ul className="space-y-3 text-white/70 text-sm font-medium">
+          {/* Links 1 */}
+          <div ref={(el) => (colsRef.current[1] = el)}>
+            <h4 className="text-black/40 font-black text-[10px] uppercase tracking-[0.3em] mb-8">Product</h4>
+            <ul className="space-y-4 text-white font-medium">
               {["Features", "Ecosystem", "Enterprise"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="hover:text-white transition-colors">
-                    {item}
-                  </a>
-                </li>
+                <li key={item}><a href="#" className="hover:text-black hover:pl-2 transition-all duration-300 block">{item}</a></li>
               ))}
             </ul>
           </div>
 
-          {/* Resources Links */}
-          <div ref={(el) => (colsRef.current[2] = el)} className="col-span-1">
-            <h4 className="text-orange-950 font-black text-xs uppercase tracking-[0.2em] mb-6">
-              Resources
-            </h4>
-            <ul className="space-y-3 text-white/70 text-sm font-medium">
+          {/* Links 2 */}
+          <div ref={(el) => (colsRef.current[2] = el)}>
+            <h4 className="text-black/40 font-black text-[10px] uppercase tracking-[0.3em] mb-8">Resources</h4>
+            <ul className="space-y-4 text-white font-medium">
               {["API Docs", "Impact Report", "Security"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="hover:text-white transition-colors">
-                    {item}
-                  </a>
-                </li>
+                <li key={item}><a href="#" className="hover:text-black hover:pl-2 transition-all duration-300 block">{item}</a></li>
               ))}
             </ul>
           </div>
 
-          {/* Social + Back to Top */}
-          <div ref={(el) => (colsRef.current[3] = el)} className="col-span-1 flex flex-col items-start md:items-end">
-            <h4 className="text-orange-950 font-black text-xs uppercase tracking-[0.2em] mb-6">
-              Connect
-            </h4>
-            <div className="flex gap-4 mb-8">
+          {/* Connect */}
+          <div ref={(el) => (colsRef.current[3] = el)} className="flex flex-col items-start md:items-end">
+            <h4 className="text-black/40 font-black text-[10px] uppercase tracking-[0.3em] mb-8">Connect</h4>
+            <div className="flex gap-4 mb-10">
               {socialLinks.map(({ Icon, color, link }, i) => (
-                <a
-                  key={i}
-                  href={link}
-                  className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 shadow-xl border border-white/10 hover:-translate-y-2 ${color}`}
-                >
-                  <Icon size={20} />
+                <a key={i} href={link} className={`social-icon w-12 h-12 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center text-black transition-all duration-500 border border-black/10 hover:scale-110 shadow-lg ${color} hover:text-white`}>
+                  <Icon size={18} />
                 </a>
               ))}
             </div>
 
-            <button
-              onClick={scrollToTop}
-              className="group flex items-center gap-2 text-orange-950 hover:text-white transition-all font-black text-[10px] uppercase tracking-widest"
-            >
+            <button onClick={scrollToTop} className="group flex items-center gap-3 text-black hover:text-white transition-all font-black text-[10px] uppercase tracking-[0.2em]">
               Back to Top
-              <HiOutlineArrowCircleUp
-                size={22}
-                className="group-hover:-translate-y-2 transition-transform"
-              />
+              <div className="w-9 h-9 rounded-full border border-black/20 flex items-center justify-center group-hover:border-white group-hover:bg-black group-hover:text-white transition-all">
+                <HiOutlineArrowCircleUp size={20} />
+              </div>
             </button>
           </div>
         </div>
 
-        {/* Bottom Bar (with parallax, controlled by GSAP above) */}
-        <div className="footer-bottom pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] text-orange-950/60 tracking-[0.3em] font-black">
+        <div className="footer-bottom pt-10 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[8px] text-black/30 tracking-[0.4em] font-black">
           <p>© 2026 RYZE AI. BUILT FOR GLOBAL IMPACT.</p>
-          <div className="flex gap-8">
+          <div className="flex gap-10">
             {["Privacy", "Terms", "Cookies"].map((link) => (
-              <a key={link} href="#" className="hover:text-white transition-colors">
-                {link}
-              </a>
+              <a key={link} href="#" className="hover:text-black transition-colors uppercase">{link}</a>
             ))}
           </div>
         </div>
