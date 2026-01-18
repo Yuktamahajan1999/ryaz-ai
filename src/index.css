@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Gentle Rain Stack Effect */
+  .stack-card {
+    position: sticky;
+    top: 10vh;
+    transform-origin: center top;
+    transition: transform 0.5s ease-out;
+  }
+
+  /* Overlay Glow */
+  .overlay-glow {
+    background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%);
+    mix-blend-mode: overlay;
+  }
+}
