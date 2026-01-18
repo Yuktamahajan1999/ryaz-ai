@@ -1,20 +1,24 @@
-# Ryze AI - Premium Stacking Scroll Experience
+# Ryze AI - Gentlerain.ai Clone
 
-A high-performance landing page clone featuring a unique **"Stacked Card"** overlay scroll mechanism inspired by premium design aesthetics.
+A high-performance landing page clone featuring advanced GSAP animations and multi-layered parallax scrolling.
 
-## 🚀 Key Features
-- **Gentle Rain Overlay Stack**: Each section pins to the screen while the next section slides over it.
-- **Visual Depth**: Previous sections scale down and blur as new layers arrive.
-- **Glassmorphism**: Translucent UI elements with backdrop blurs.
-- **GSAP Animations**: High-performance animations using GreenSock ScrollTrigger.
+## 🌟 Assignment Features
+- **Multi-layer Parallax**: Stacking section effect using GSAP ScrollTrigger pinning.
+- **Rotating Text**: Dynamic "Practice, Upskill, Play, Improve" animation.
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop views.
+- **Custom Footer**: Dark-themed interactive footer with marquee text and rotating geometric assets.
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 - **React.js** (Vite)
 - **Tailwind CSS**
-- **GSAP** (ScrollTrigger)
-- **Lucide React** (Icons)
+- **GSAP** (GreenSock Animation Platform)
+- **Lucide & React Icons**
 
-## 📦 How to Run Locally
+## 🤖 AI Disclosure & Credits
+- **AI Tools Used**: Gemini AI was utilized for debugging complex GSAP ScrollTrigger logic, optimizing Tailwind color contrasts, and structuring the README documentation.
+- **Assets**: Icons sourced from Lucide React and React Icons. Design inspiration from Gentlerain.ai.
+
+## 🚀 Local Setup
 1. Clone the repo: `git clone https://github.com/Yuktamahajan1999/ryaz-ai.git`
-2. Install: `npm install`
-3. Run: `npm run dev`
+2. Install dependencies: `npm install`
+3. Launch project: `npm run dev`
